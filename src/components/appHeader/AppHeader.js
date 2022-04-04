@@ -1,9 +1,20 @@
 
+import Logo from "../../resources/icons/PokemonLogo";
+
+import './appHeader.scss';
+
 const AppHeader = () => {
+    
+
     return (
-        <div>
-            
-        </div>
+        <header>
+            <Logo/>
+            <div>
+                <p>Filter</p>
+                <button>name</button>
+                <button>type</button>
+            </div>
+        </header>
     )
 }
 

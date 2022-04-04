@@ -1,8 +1,12 @@
 import AppHeader from '../appHeader/AppHeader';
+import PokemonList from '../pokemonList/PokemonList';
 
 const App = () => {
     return (
-        <AppHeader/>
+        <div className="app">
+            <AppHeader/>
+            <PokemonList/>
+        </div>
     )
 };
 

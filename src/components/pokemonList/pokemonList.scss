@@ -1,0 +1,36 @@
+.pokemon{
+    &__list {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(4, 200px);
+        column-gap: 25px;
+        row-gap: 30px;
+        justify-content: space-around;
+    }
+    &__card {
+        width: 220px;
+        height: auto;
+        border: 2px solid #1c2c35;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        transition: all .3s;
+        cursor: pointer;
+        img{
+            height: 200px;
+        }
+        &:hover {
+            transform: scale(1.1)
+        }
+    }
+    &__name {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    &__type {
+        font-size: 18px;
+        
+    }
+}
