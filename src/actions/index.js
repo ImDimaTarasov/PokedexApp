@@ -16,3 +16,17 @@ export const pokemonFetchingError = () => {
         type: 'POKEMON_FETCHING_ERROR'
     }
 }
+
+export const modalChange = (boolean) => {
+    return {
+        type: 'MODAL_CHANGE',
+        payload: boolean
+    }
+}
+
+export const chosenPokemon = (pokemon) => {
+    return {
+        type: 'POKEMON',
+        payload: pokemon
+    }
+}

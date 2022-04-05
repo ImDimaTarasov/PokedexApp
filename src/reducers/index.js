@@ -1,7 +1,9 @@
 const initialState = {
     pokemon: [],
     pokemonLoadingStatus: 'idle',
-    filters: []
+    filters: [],
+    modal: false,
+    chosenPokemon: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +23,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 pokemonLoadingStatus: 'error'
+            }
+        case 'MODAL_CHANGE':
+            return {
+                ...state,
+                modal: action.payload
+            }
+        case 'POKEMON':
+            return {
+                ...state,
+                chosenPokemon: action.payload
             }
         default: return state
     }

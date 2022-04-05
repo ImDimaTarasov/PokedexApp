@@ -27,7 +27,8 @@ const PokeApi = () => {
             name: pokemon.name.toUpperCase(),
             id: pokemon.id,
             type: pokemon.types[0].type.name,
-            sprites: pokemon.sprites,
+            spritFront: pokemon.sprites.front_default,
+            spritBack: pokemon.sprites.back_default,
             height: pokemon.height,
             weight: pokemon.weight
         }

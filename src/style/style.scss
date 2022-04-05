@@ -59,6 +59,9 @@ input::-webkit-inner-spin-button {
         bottom: -70px;
         z-index: -1;
     }
+    &_active {
+        overflow: hidden;
+    }
 }
 
 

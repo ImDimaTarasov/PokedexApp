@@ -5,7 +5,7 @@ import PokeApi from '../../services/PokeApi';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-import { pokemonFetching, pokemonFetched, pokemonFetchingError } from '../../actions';
+import { pokemonFetching, pokemonFetched, pokemonFetchingError, modalChange, chosenPokemon } from '../../actions';
 
 import './pokemonList.scss';
 
@@ -53,16 +53,20 @@ const PokemonList = () => {
         return <ErrorMessage/>;
     }
     
+    const openModal = (pok) => {
+        dispatch(modalChange(true));
+        dispatch(chosenPokemon(pok))
+    }
 
     function renderCards(arr) {
         
         const cards = arr.map((item) => {
             
             return (
-                <li className="pokemon__card"
+                <li onClick={() => openModal(item)} className="pokemon__card"
                 tabIndex={0}
                 key={item.id}>
-                    <img src={item.sprites.front_default} alt={item.name}/>
+                    <img src={item.spritFront} alt={item.name}/>
                     <div className="pokemon__name">{item.name}</div>
                     <div className="pokemon__type">type: {item.type}</div>
                 </li>
