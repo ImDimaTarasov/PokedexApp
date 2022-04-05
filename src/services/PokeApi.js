@@ -1,7 +1,7 @@
 import {useHttp} from '../hooks/http.hook';
 
 const PokeApi = () => {
-    const {request, clearError, process, setProcess} = useHttp();
+    const {request, process, setProcess} = useHttp();
     
     const getAllPokemons = async() => {
         const res = await request("https://pokeapi.co/api/v2/pokemon?limit=20&offset=20");
@@ -25,7 +25,9 @@ const PokeApi = () => {
     }
     return {
         getAllPokemons,
-        getOnePokemon
+        getOnePokemon,
+        setProcess,
+        process
     }
 }
 export default PokeApi;
