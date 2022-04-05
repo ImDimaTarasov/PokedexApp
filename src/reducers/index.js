@@ -2,6 +2,7 @@ const initialState = {
     pokemon: [],
     pokemonLoadingStatus: 'idle',
     filters: [],
+    activeFilter: '',
     modal: false,
     chosenPokemon: []
 }
@@ -33,6 +34,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 chosenPokemon: action.payload
+            }
+        case 'FILTER_FETCHED':
+            return {
+                ...state,
+                filters: action.payload
+            }
+        case 'ACTIVE_FILTER':
+            return {
+                ...state,
+                activeFilter: action.payload
             }
         default: return state
     }

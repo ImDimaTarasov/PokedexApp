@@ -30,3 +30,15 @@ export const chosenPokemon = (pokemon) => {
         payload: pokemon
     }
 }
+export const filtersFetched = (filters) => {
+    return {
+        type: "FILTER_FETCHED",
+        payload: filters
+    }
+}
+export const getActiveFilter = (filter) => {
+    return {
+        type: 'ACTIVE_FILTER',
+        payload: filter
+    }
+}

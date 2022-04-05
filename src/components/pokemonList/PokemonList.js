@@ -5,13 +5,13 @@ import PokeApi from '../../services/PokeApi';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-import { pokemonFetching, pokemonFetched, pokemonFetchingError, modalChange, chosenPokemon } from '../../actions';
+import { pokemonFetching, pokemonFetched, pokemonFetchingError, modalChange, chosenPokemon, filtersFetched } from '../../actions';
 
 import './pokemonList.scss';
 
 
 const PokemonList = () => {
-    const {pokemon, pokemonLoadingStatus} = useSelector(state => state);
+    const {pokemon, pokemonLoadingStatus, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [offset, setOffset] = useState(20);
@@ -46,7 +46,7 @@ const PokemonList = () => {
         setOffset(offset + 20)
         return Promise.all(newArr)
     }
-
+    
     if (pokemonLoadingStatus === "loading") {
         return <Spinner/>;
     } else if (pokemonLoadingStatus === "error") {
@@ -56,6 +56,14 @@ const PokemonList = () => {
     const openModal = (pok) => {
         dispatch(modalChange(true));
         dispatch(chosenPokemon(pok))
+    }
+
+    const filteredPokemon = (pokemonList) => {
+        if(activeFilter === "") {
+            return pokemonList;
+        } else {
+            return pokemonList.filter(item => item.type === activeFilter);
+        }
     }
 
     function renderCards(arr) {
@@ -80,7 +88,7 @@ const PokemonList = () => {
         
     }
     
-    const elements = renderCards(pokemon);
+    const elements = renderCards(filteredPokemon(pokemon));
     return (
         <div className='pokemon'>
             {elements}

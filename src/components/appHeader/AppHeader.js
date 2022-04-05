@@ -9,11 +9,6 @@ const AppHeader = () => {
     return (
         <header>
             <Logo/>
-            <div>
-                <p>Filter</p>
-                <button>name</button>
-                <button>type</button>
-            </div>
         </header>
     )
 }

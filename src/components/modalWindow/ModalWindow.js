@@ -1,10 +1,10 @@
-import { useEffect, useState} from 'react';
+import { useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { modalChange } from '../../actions';
 
 import './modalWindow.scss';
-import img from '../../resources/img/21.png';
+
 const ModalWindow = () => {
     const {modal, chosenPokemon} = useSelector(state => state);
     const dispatch = useDispatch();
@@ -13,8 +13,11 @@ const ModalWindow = () => {
 
     const [pokemonFront, setPokemonFront] = useState(true);
     
-    const closeModal = () => {
-        dispatch(modalChange(false))
+    const closeModal = (e) => {
+        if (e.getAttribute('data-close')){
+            dispatch(modalChange(false))
+            setPokemonFront(true);
+        }
     }
     
     const pokemonImg = () => {
@@ -22,10 +25,11 @@ const ModalWindow = () => {
     }
 
     return(
-        <div className='modal' id={id} style={modal? {display: 'block'} : {display: 'none'}}> 
+        <div className='modal' data-close onClick={(e) => closeModal(e.target)} id={id} style={modal? {display: 'block'} : {display: 'none'}}> 
         <div className="modal__dialog">
             <div className="modal__content">
-                    <div onClick={() => closeModal()} className="modal__close">&times;</div>
+                    <div data-close onClick={(e) => closeModal(e.target)} className="modal__close">&times;</div>
+                    <div className='modal__img'>If you want to see my back, click on me</div>
                     <img onClick={() => pokemonImg()} src={pokemonFront ? spritFront: spritBack} alt={name}/>
                     <div className='modal__information'>
                         <div className="modal__information_name">{name}</div>
