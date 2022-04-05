@@ -1,70 +1,58 @@
-import { useState, useEffect, useMemo} from 'react';
+import { useEffect, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import PokeApi from '../../services/PokeApi'; 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
+import { pokemonFetching, pokemonFetched, pokemonFetchingError } from '../../actions';
 
 import './pokemonList.scss';
 
-const setContent = (process, Component, newItemLoading ) => {
-    switch (process) {
-        case 'waiting' : 
-            return <Spinner/>;
-        case 'loading' :
-            return newItemLoading ? <Component/> : <Spinner/>;
-        case 'error' :
-            return <ErrorMessage/>;
-        case 'confirmed' :
-            return <Component/>;
-        default: 
-            throw new Error('Unexpected process state'); 
-    } 
-}
 
 const PokemonList = () => {
-    const [pokemonList, setPokemonList] = useState([]);
-    const [newItemLoading, setNewItemLoading] = useState(false);
-    const [pokemonEnded, setPokemonEnded] = useState(false);
+    const {pokemon, pokemonLoadingStatus} = useSelector(state => state);
+    const dispatch = useDispatch();
 
-    const {getAllPokemons, getOnePokemon, process, setProcess} = PokeApi();
+    const [offset, setOffset] = useState(20);
+    const [newPokemonLoading, setNewPokemonLoading] = useState(false);
 
+    const { getOnePokemon, getAllPokemonUrl} = PokeApi();
 
     useEffect(()=> {
-        onRequest(true);
+        onRequest(offset);
         // eslint-disable-next-line
     },[]);
-
-    const onRequest = (initial) => {
-        initial ? setNewItemLoading(false) : setNewItemLoading(true);
-
-        getAllPokemons()
-            .then(data => transformToLinks(data))
-            .then(urls => {
-                urls.map(url => {
-                    getOnePokemon(url)
-                    .then(data => setPokemonList(pokList => [...pokList, data]))
-                });
-            })
-            .then(() => setProcess('confirmed'))
-    }
-
-    const onPokemonLoaded = (newPokemon) => {
-        let ended = false;
-        if (newPokemon.length < 20) {
-            ended = true
+    
+    const onRequest = (offset) => {
+        if(!newPokemonLoading){
+            dispatch(pokemonFetching());
         }
-        setPokemonList(pokemonList => [...pokemonList, newPokemon]);
-        setNewItemLoading(newItemLoading => false);
-        setPokemonEnded(ended);
+        setNewPokemonLoading(true)
+        getAllPokemonUrl(offset)
+            .then(data => getPokemonsByUrl(data))
+            .then(list => dispatch(pokemonFetched([...pokemon, ...list])))
+            .catch(() => dispatch(pokemonFetchingError()))
+        
     }
 
-    const transformToLinks = (data) => {
-        let newList = data.map(item => {
-            return item.url
-        })
-        return newList;
+    const getPokemonsByUrl = (urls) => {
+        let newArr = urls.map(url => {
+           return getOnePokemon(url)
+            .then(data => {
+                return data
+            })
+        });
+        setOffset(offset + 20)
+        return Promise.all(newArr)
     }
+
+    if (pokemonLoadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (pokemonLoadingStatus === "error") {
+        return <ErrorMessage/>;
+    }
+    
 
     function renderCards(arr) {
         
@@ -87,21 +75,14 @@ const PokemonList = () => {
         )
         
     }
-
-    console.log(pokemonList)
-    const elements = setContent(process, () => renderCards(pokemonList), newItemLoading) ;
-    // const elements = useMemo(()=> {
-    //     return setContent(process, () => renderCards(pokemonList), newItemLoading);
-    //      // eslint-disable-next-line
-    // },[process]);
+    
+    const elements = renderCards(pokemon);
     return (
         <div className='pokemon'>
             {elements}
             <button 
             className="button"
-            style={{'display' : pokemonEnded ? 'none' : 'block'}}
-            disabled={newItemLoading}
-            // onClick={() => {onRequest()}}
+            onClick={() => {onRequest(offset)}}
             >
                 <div className="inner">load more</div>
             </button>

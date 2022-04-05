@@ -1,18 +1,27 @@
 import {useHttp} from '../hooks/http.hook';
 
 const PokeApi = () => {
-    const {request, process, setProcess} = useHttp();
-    
-    const getAllPokemons = async() => {
-        const res = await request("https://pokeapi.co/api/v2/pokemon?limit=20&offset=20");
-        return res.results;
+    const {request} = useHttp();
+    const _baseOffset = 20;
+
+    const getAllPokemonUrl = async(offset = _baseOffset) => {
+        const res = await request(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`);
+        return (_transformToLinks(res.results))
     }
     
     const getOnePokemon = async(url) => {
         const res = await request(url);
         return _transformPokemon(res);
     }
-    
+
+
+    const _transformToLinks = (list) => {
+        let newList = list.map(item => {
+            return item.url
+        })
+        return newList;
+    }
+
     const _transformPokemon = (pokemon) => {
         return {
             name: pokemon.name.toUpperCase(),
@@ -24,10 +33,8 @@ const PokeApi = () => {
         }
     }
     return {
-        getAllPokemons,
         getOnePokemon,
-        setProcess,
-        process
+        getAllPokemonUrl
     }
 }
 export default PokeApi;
