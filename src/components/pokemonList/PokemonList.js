@@ -5,13 +5,13 @@ import PokeApi from '../../services/PokeApi';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-import { pokemonFetching, pokemonFetched, pokemonFetchingError, modalChange, chosenPokemon, filtersFetched } from '../../actions';
+import { pokemonFetching, pokemonFetched, pokemonFetchingError, modalChange, chosenPokemon,  } from '../../actions';
 
 import './pokemonList.scss';
 
 
 const PokemonList = () => {
-    const {pokemon, pokemonLoadingStatus, activeFilter} = useSelector(state => state);
+    const {pokemon, pokemonLoadingStatus, activeFilter, searchingPokemon, theme} = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [offset, setOffset] = useState(20);
@@ -58,6 +58,15 @@ const PokemonList = () => {
         dispatch(chosenPokemon(pok))
     }
 
+    const findPokemonbyName = (pokemon, filter) => {
+        if (pokemon.length === 0){
+            return pokemon
+        }
+        return pokemon.filter(item => {
+            return item.name.includes(filter)
+        })
+    }
+
     const filteredPokemon = (pokemonList) => {
         if(activeFilter === "") {
             return pokemonList;
@@ -87,10 +96,11 @@ const PokemonList = () => {
         )
         
     }
-    
-    const elements = renderCards(filteredPokemon(pokemon));
+    let clazz = theme ? 'pokemon pokemon-dark' : 'pokemon pokemon-light';
+
+    const elements = renderCards(filteredPokemon(findPokemonbyName(pokemon, searchingPokemon)));
     return (
-        <div className='pokemon'>
+        <div className={clazz}>
             {elements}
             <button 
             className="button"

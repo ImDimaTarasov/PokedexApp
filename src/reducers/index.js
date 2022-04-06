@@ -4,7 +4,9 @@ const initialState = {
     filters: [],
     activeFilter: '',
     modal: false,
-    chosenPokemon: []
+    chosenPokemon: [],
+    searchingPokemon: '',
+    theme: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -44,6 +46,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeFilter: action.payload
+            }
+        case 'SEARCHING_POKEMON':
+            return {
+                ...state,
+                searchingPokemon: action.payload
+            }
+        case 'ACTIVE_THEME':
+            return {
+                ...state,
+                theme: action.payload
             }
         default: return state
     }

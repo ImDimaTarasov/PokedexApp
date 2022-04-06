@@ -42,3 +42,15 @@ export const getActiveFilter = (filter) => {
         payload: filter
     }
 }
+export const searchingPokemon = (pokemon) => {
+    return {
+        type: 'SEARCHING_POKEMON',
+        payload: pokemon
+    }
+}
+export const chooseTheme = (theme) => {
+    return {
+        type: 'ACTIVE_THEME',
+        payload: theme
+    }
+}

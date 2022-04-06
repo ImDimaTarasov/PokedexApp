@@ -6,7 +6,7 @@ import { modalChange } from '../../actions';
 import './modalWindow.scss';
 
 const ModalWindow = () => {
-    const {modal, chosenPokemon} = useSelector(state => state);
+    const {modal, chosenPokemon, theme} = useSelector(state => state);
     const dispatch = useDispatch();
 
     const {name, id, type, spritFront, spritBack, height, weight} = chosenPokemon;
@@ -23,9 +23,10 @@ const ModalWindow = () => {
     const pokemonImg = () => {
       setPokemonFront(!pokemonFront)
     }
+    let clazz = theme ? 'modal modal-dark' : 'modal modal-light';
 
     return(
-        <div className='modal' data-close onClick={(e) => closeModal(e.target)} id={id} style={modal? {display: 'block'} : {display: 'none'}}> 
+        <div className={clazz} data-close onClick={(e) => closeModal(e.target)} id={id} style={modal? {display: 'block'} : {display: 'none'}}> 
         <div className="modal__dialog">
             <div className="modal__content">
                     <div data-close onClick={(e) => closeModal(e.target)} className="modal__close">&times;</div>

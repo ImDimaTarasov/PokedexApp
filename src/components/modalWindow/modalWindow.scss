@@ -9,6 +9,18 @@
     height: 100%;
     overflow: hidden;
     background-color: rgba(0,0,0,.7);
+    &-dark {
+        color: white;
+        .modal__content {
+            background-color: $main-color;
+        }
+    }
+    &-light{
+        color: black;
+        .modal__content {
+            background-color: $second-color;
+        }
+    }
     &__dialog {
         max-width: 500px;
         margin: 100px auto;
@@ -18,7 +30,6 @@
         width: 100%;
         min-height: 500px;
         padding: 40px;
-        // background-color: white;
         border: 5px solid rgba(0,0,0,.2);
         border-radius: 5px;
         max-height: 80vh;
@@ -44,11 +55,9 @@
 
     }
     &__img{
-        color: white;
         text-align: center;
     }
     &__information {
-        color: white;
         font-size: 20px;
         line-height: 30px;
         &_name {
